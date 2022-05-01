@@ -9,7 +9,6 @@ import java.io.FileInputStream;
 public class Persona {
     private static final int MAX_LETTERE = 3;
 
-
     private String nome;
     private String cognome;
     private String sesso;
@@ -88,19 +87,6 @@ public class Persona {
         this.comuneNascita = comuneNascita;
     }
 
-    public void setAaDataNascita(String aaDataNascita) {
-        this.aaDataNascita = aaDataNascita;
-    }
-
-    public void setMmDataNascita(String mmDataNascita) {
-        this.mmDataNascita = mmDataNascita;
-    }
-
-    public void setGgDataNascita(String ggDataNascita) {
-        this.ggDataNascita = ggDataNascita;
-    }
-
-
     public void setCodiceFiscale() {
         codiceFiscale.append(lettereNomeCognome(cognome));
         codiceFiscale.append(lettereNomeCognome(nome));
@@ -111,7 +97,7 @@ public class Persona {
             codiceFiscale.append(codiceComune());
         } catch (XMLStreamException e) {
             e.printStackTrace();
-            //codiceFiscale.append("A000");
+            codiceFiscale.append("A000");
         }
         codiceFiscale.append(carattereControllo(codiceFiscale.toString()));
 
@@ -179,7 +165,6 @@ public class Persona {
         else
             return Integer.parseInt(ggDataNascita) + 40;
     }
-
 
     public String carattereControllo(String codiceCalcolo) {
         return switch (calcolaCarattereControllo(codiceCalcolo)) {
@@ -309,57 +294,9 @@ public class Persona {
         };
     }
 
-    public String stampaP() {
-        return new String(nome + " " + cognome + " " + codiceFiscale);
-    }
-
     public String codiceComune() throws XMLStreamException {
-
-        //LETTURA FILE comuni.xml
-        XMLInputFactory comuniif = null;
-        XMLStreamReader comunir = null;
-        try {
-            comuniif = XMLInputFactory.newInstance();
-            comunir = comuniif.createXMLStreamReader("comuni.xml", new FileInputStream("comuni.xml"));
-        } catch (Exception e) {
-            System.out.println("Errore nell'inizializzazione del reader:");
-            System.out.println(e.getMessage());
-        }
-
-        boolean restituisciCodice = false;
-        boolean nextCodice = false;
-
-        while (comunir.hasNext()) { // continua a leggere finché ha eventi a disposizione
-
-            switch (comunir.getEventType()) { // switch sul tipo di evento
-                case XMLStreamConstants.START_DOCUMENT:                             // inizio del documento: stampa che inizia il documento
-                    break;
-
-                case XMLStreamConstants.START_ELEMENT:                             // inizio di un elemento: stampa il nome del tag e i suoi attributi
-                    if(nextCodice)
-                        restituisciCodice = true;
-                    break;
-
-                case XMLStreamConstants.END_ELEMENT:                              // fine di un elemento: stampa il nome del tag chiuso
-                    break;
-
-                case XMLStreamConstants.COMMENT:
-                    break;
-
-                case XMLStreamConstants.CHARACTERS:                        // content all’interno di un elemento: stampa il testo
-                    //if (personer.getText().trim().length() > 0) {       // controlla se il testo non contiene solo spazi
-                    if(comunir.getText().equals(comuneNascita))
-                        nextCodice = true;
-                    if(restituisciCodice)
-                        return comunir.getText();
-                    break;
-            }
-            comunir.next();
-        }
-
-        return "A000";
+        return InputComuni.codiceComune(comuneNascita);
     }
-
 
     public ValiditaCodici setValiditaCodice() throws XMLStreamException {
 
@@ -367,58 +304,13 @@ public class Persona {
             return ValiditaCodici.INVALIDO;
         }
 
-        //LETTURA FILE codiciFiscali.xml
-        XMLInputFactory codiciFiscaliif = null;
-        XMLStreamReader codiciFiscalir = null;
-        try {
-            codiciFiscaliif = XMLInputFactory.newInstance();
-            codiciFiscalir = codiciFiscaliif.createXMLStreamReader("codiciFiscali.xml", new FileInputStream("codiciFiscali.xml"));
-        } catch (Exception e) {
-            System.out.println("Errore nell'inizializzazione del reader:");
-            System.out.println(e.getMessage());
-        }
-
-        boolean codiceValido = false;
-
-        while (codiciFiscalir.hasNext()) { // continua a leggere finché ha eventi a disposizione
-
-            switch (codiciFiscalir.getEventType()) { // switch sul tipo di evento
-                case XMLStreamConstants.START_DOCUMENT:                             // inizio del documento: stampa che inizia il documento
-                    //System.out.println("Start Read Doc " + "inputPersone.xml");
-                    break;
-
-                case XMLStreamConstants.START_ELEMENT:                             // inizio di un elemento: stampa il nome del tag e i suoi attributi
-                    //System.out.println("Tag " + personer.getLocalName());
-                    //for (int i = 0; i < personer.getAttributeCount(); i++)
-                    //    System.out.printf(" => attributo %s->%s%n", personer.getAttributeLocalName(i), personer.getAttributeValue(i));
-                    break;
-
-                case XMLStreamConstants.END_ELEMENT:                              // fine di un elemento: stampa il nome del tag chiuso
-                    //System.out.println("END-Tag " + personer.getLocalName());
-                    break;
-
-                case XMLStreamConstants.COMMENT:
-                    //System.out.println("// commento " + personer.getText());break; // commento: ne stampa il contenuto
-                    break;
-
-                case XMLStreamConstants.CHARACTERS:                        // content all’interno di un elemento: stampa il testo
-                    //if (personer.getText().trim().length() > 0) {       // controlla se il testo non contiene solo spazi
-                    //System.out.println("-> " + personer.getText());
-                    //}
-                    if(codiciFiscalir.getText().equals(codiceFiscale.toString()))
-                        codiceValido = true;
-                    break;
-            }
-
-            codiciFiscalir.next();
-        }
+        boolean codiceValido = InputCodici.existCodice(codiceFiscale);
 
         if(codiceValido)
             return ValiditaCodici.VALIDO;
         else
             return ValiditaCodici.SPAIATO;
     }
-
 
     public boolean isACodice() {
         if(codiceFiscale.length() != 16)
