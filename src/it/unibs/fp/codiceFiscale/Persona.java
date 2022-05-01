@@ -11,7 +11,7 @@ public class Persona {
     private String aaDataNascita;
     private String mmDataNascita;
     private String ggDataNascita;
-    private StringBuffer codiceFiscale;
+    private StringBuffer codiceFiscale = new StringBuffer();
 
     public Persona(String nome, String cognome, String sesso, String codiceComuneNascita, String aaDataNascita, String mmDataNascita, String ggDataNascita) {
         this.nome = nome;
@@ -97,7 +97,7 @@ public class Persona {
     }
 
     public String lettereNomeCognome(String s) {
-        String lettereOutput = null;
+        String lettereOutput = "\0";
         if(s.length() < MAX_LETTERE){
             lettereOutput = s;
             for(int i = s.length(); i < MAX_LETTERE; i++)
@@ -280,6 +280,10 @@ public class Persona {
             case 'Z' -> 25;
             default -> -1;
         };
+    }
+
+    public String stampaP() {
+        return new String(nome + " " + cognome + " " + codiceFiscale);
     }
 
 }
