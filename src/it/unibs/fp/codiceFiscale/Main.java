@@ -58,20 +58,22 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        //Persona[] persone = new Persona[];
+        Persona[] persone;
 
 
         while (personer.hasNext()) { // continua a leggere finché ha eventi a disposizione
-            String lastTag;
+            boolean nextPerson = false;
+            int count = 0;
 
             switch (personer.getEventType()) { // switch sul tipo di evento
                 case XMLStreamConstants.START_DOCUMENT: // inizio del documento: stampa che inizia il documento
                     //System.out.println("Start Read Doc " + "inputPersone.xml");
                     break;
                 case XMLStreamConstants.START_ELEMENT: // inizio di un elemento: stampa il nome del tag e i suoi attributi
-                    //System.out.println("Tag " + personer.getLocalName());
-                    //for (int i = 0; i < personer.getAttributeCount(); i++)
-                    //    System.out.printf(" => attributo %s->%s%n", personer.getAttributeLocalName(i), personer.getAttributeValue(i));
+                    System.out.println("Tag " + personer.getLocalName());
+                    for (int i = 0; i < personer.getAttributeCount(); i++)
+                        System.out.printf(" => attributo %s->%s%n", personer.getAttributeLocalName(i), personer.getAttributeValue(i));
+                    //System.out.println((personer.getAttributeValue(count)));
                     break;
                 case XMLStreamConstants.END_ELEMENT: // fine di un elemento: stampa il nome del tag chiuso
                     //System.out.println("END-Tag " + personer.getLocalName());
