@@ -1,5 +1,11 @@
 package it.unibs.fp.codiceFiscale;
 
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.FileInputStream;
+
 public class Persona {
     private static final int MAX_LETTERE = 3;
 
@@ -7,17 +13,18 @@ public class Persona {
     private String nome;
     private String cognome;
     private String sesso;
-    private String codiceComuneNascita;
+    private String comuneNascita;
     private String aaDataNascita;
     private String mmDataNascita;
     private String ggDataNascita;
+    private ValiditaCodici validita;
     private StringBuffer codiceFiscale = new StringBuffer();
 
-    public Persona(String nome, String cognome, String sesso, String codiceComuneNascita, String aaDataNascita, String mmDataNascita, String ggDataNascita) {
+    public Persona(String nome, String cognome, String sesso, String comuneNascita, String aaDataNascita, String mmDataNascita, String ggDataNascita) {
         this.nome = nome;
         this.cognome = cognome;
         this.sesso = sesso;
-        this.codiceComuneNascita = codiceComuneNascita;
+        this.comuneNascita = comuneNascita;
         this.aaDataNascita = aaDataNascita;
         this.mmDataNascita = mmDataNascita;
         this.ggDataNascita = ggDataNascita;
@@ -40,8 +47,8 @@ public class Persona {
         return sesso;
     }
 
-    public String getCodiceComuneNascita() {
-        return codiceComuneNascita;
+    public String getComuneNascita() {
+        return comuneNascita;
     }
 
     public String getAaDataNascita() {
@@ -54,6 +61,14 @@ public class Persona {
 
     public String getGgDataNascita() {
         return ggDataNascita;
+    }
+
+    public StringBuffer getCodiceFiscale() {
+        return codiceFiscale;
+    }
+
+    public ValiditaCodici getValidita() {
+        return validita;
     }
 
     //// SETTER \\\\
@@ -70,7 +85,7 @@ public class Persona {
     }
 
     public void setComuneNascita(String comuneNascita) {
-        this.codiceComuneNascita = comuneNascita;
+        this.comuneNascita = comuneNascita;
     }
 
     public void setAaDataNascita(String aaDataNascita) {
@@ -92,29 +107,41 @@ public class Persona {
         codiceFiscale.append(aaDataNascita.substring(2));
         codiceFiscale.append(letteraMese(mmDataNascita));
         codiceFiscale.append(String.format("%02d", giornoNascita(sesso, ggDataNascita)));
-        codiceFiscale.append(codiceComuneNascita);
-        codiceFiscale.append(carattereControllo());
+        try {
+            codiceFiscale.append(codiceComune());
+        } catch (XMLStreamException e) {
+            e.printStackTrace();
+            //codiceFiscale.append("A000");
+        }
+        codiceFiscale.append(carattereControllo(codiceFiscale.toString()));
+
+        try {
+            validita = setValiditaCodice();
+        } catch (XMLStreamException e) {
+            e.printStackTrace();
+            validita = ValiditaCodici.INVALIDO;
+        }
     }
 
-    public String lettereNomeCognome(String s) {
-        String lettereOutput = "\0";
+    public StringBuffer lettereNomeCognome(String s) {
+        StringBuffer lettereOutput = new StringBuffer();
         if(s.length() < MAX_LETTERE){
-            lettereOutput = s;
+            lettereOutput.append(s);
             for(int i = s.length(); i < MAX_LETTERE; i++)
-                lettereOutput += "X";
+                lettereOutput.append("X");
         }
         else {
             int numConsonanti = 0;
             for(int i = 0; i < s.length() && lettereOutput.length() < MAX_LETTERE; i++) {
                 if (!isVowel(s.charAt(i))) {
-                    lettereOutput += s.charAt(i);
+                    lettereOutput.append(s.charAt(i));
                     numConsonanti++;
                 }
             }
             if(numConsonanti < MAX_LETTERE) {
                 for(int i = 0; i < s.length() && lettereOutput.length() < MAX_LETTERE; i++)
                     if (isVowel(s.charAt(i)))
-                        lettereOutput += s.charAt(i);
+                        lettereOutput.append(s.charAt(i));
             }
         }
 
@@ -122,7 +149,7 @@ public class Persona {
     }
 
     public boolean isVowel(char c) {
-        if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
+        if (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U') {
             return true;
         }
         return false;
@@ -154,8 +181,8 @@ public class Persona {
     }
 
 
-    public String carattereControllo() {
-        return switch (calcolaCarattereControllo()) {
+    public String carattereControllo(String codiceCalcolo) {
+        return switch (calcolaCarattereControllo(codiceCalcolo)) {
             case 0 -> "A";
             case 1 -> "B";
             case 2 -> "C";
@@ -186,16 +213,16 @@ public class Persona {
         };
     }
 
-    public int calcolaCarattereControllo() {
+    public int calcolaCarattereControllo(String codiceCalcolo) {
         int sommaCaratteri = 0;
-        for(int i = 0; i < codiceFiscale.length(); i++) {
+        for(int i = 0; i < codiceCalcolo.length(); i++) {
             if((i + 1) % 2 != 0)
-                sommaCaratteri += caratteriDispari(codiceFiscale.charAt(i));
+                sommaCaratteri += caratteriDispari(codiceCalcolo.charAt(i));
             else
-                sommaCaratteri += caratteriPari(codiceFiscale.charAt(i));
+                sommaCaratteri += caratteriPari(codiceCalcolo.charAt(i));
         }
 
-        return sommaCaratteri / 26;
+        return sommaCaratteri % 26;
     }
 
     public int caratteriDispari(char c) {
@@ -285,5 +312,152 @@ public class Persona {
     public String stampaP() {
         return new String(nome + " " + cognome + " " + codiceFiscale);
     }
+
+    public String codiceComune() throws XMLStreamException {
+
+        //LETTURA FILE comuni.xml
+        XMLInputFactory comuniif = null;
+        XMLStreamReader comunir = null;
+        try {
+            comuniif = XMLInputFactory.newInstance();
+            comunir = comuniif.createXMLStreamReader("comuni.xml", new FileInputStream("comuni.xml"));
+        } catch (Exception e) {
+            System.out.println("Errore nell'inizializzazione del reader:");
+            System.out.println(e.getMessage());
+        }
+
+        boolean restituisciCodice = false;
+        boolean nextCodice = false;
+
+        while (comunir.hasNext()) { // continua a leggere finché ha eventi a disposizione
+
+            switch (comunir.getEventType()) { // switch sul tipo di evento
+                case XMLStreamConstants.START_DOCUMENT:                             // inizio del documento: stampa che inizia il documento
+                    break;
+
+                case XMLStreamConstants.START_ELEMENT:                             // inizio di un elemento: stampa il nome del tag e i suoi attributi
+                    if(nextCodice)
+                        restituisciCodice = true;
+                    break;
+
+                case XMLStreamConstants.END_ELEMENT:                              // fine di un elemento: stampa il nome del tag chiuso
+                    break;
+
+                case XMLStreamConstants.COMMENT:
+                    break;
+
+                case XMLStreamConstants.CHARACTERS:                        // content all’interno di un elemento: stampa il testo
+                    //if (personer.getText().trim().length() > 0) {       // controlla se il testo non contiene solo spazi
+                    if(comunir.getText().equals(comuneNascita))
+                        nextCodice = true;
+                    if(restituisciCodice)
+                        return comunir.getText();
+                    break;
+            }
+            comunir.next();
+        }
+
+        return "A000";
+    }
+
+
+    public ValiditaCodici setValiditaCodice() throws XMLStreamException {
+
+        if(!isACodice()) {
+            return ValiditaCodici.INVALIDO;
+        }
+
+        //LETTURA FILE codiciFiscali.xml
+        XMLInputFactory codiciFiscaliif = null;
+        XMLStreamReader codiciFiscalir = null;
+        try {
+            codiciFiscaliif = XMLInputFactory.newInstance();
+            codiciFiscalir = codiciFiscaliif.createXMLStreamReader("codiciFiscali.xml", new FileInputStream("codiciFiscali.xml"));
+        } catch (Exception e) {
+            System.out.println("Errore nell'inizializzazione del reader:");
+            System.out.println(e.getMessage());
+        }
+
+        boolean codiceValido = false;
+
+        while (codiciFiscalir.hasNext()) { // continua a leggere finché ha eventi a disposizione
+
+            switch (codiciFiscalir.getEventType()) { // switch sul tipo di evento
+                case XMLStreamConstants.START_DOCUMENT:                             // inizio del documento: stampa che inizia il documento
+                    //System.out.println("Start Read Doc " + "inputPersone.xml");
+                    break;
+
+                case XMLStreamConstants.START_ELEMENT:                             // inizio di un elemento: stampa il nome del tag e i suoi attributi
+                    //System.out.println("Tag " + personer.getLocalName());
+                    //for (int i = 0; i < personer.getAttributeCount(); i++)
+                    //    System.out.printf(" => attributo %s->%s%n", personer.getAttributeLocalName(i), personer.getAttributeValue(i));
+                    break;
+
+                case XMLStreamConstants.END_ELEMENT:                              // fine di un elemento: stampa il nome del tag chiuso
+                    //System.out.println("END-Tag " + personer.getLocalName());
+                    break;
+
+                case XMLStreamConstants.COMMENT:
+                    //System.out.println("// commento " + personer.getText());break; // commento: ne stampa il contenuto
+                    break;
+
+                case XMLStreamConstants.CHARACTERS:                        // content all’interno di un elemento: stampa il testo
+                    //if (personer.getText().trim().length() > 0) {       // controlla se il testo non contiene solo spazi
+                    //System.out.println("-> " + personer.getText());
+                    //}
+                    if(codiciFiscalir.getText().equals(codiceFiscale.toString()))
+                        codiceValido = true;
+                    break;
+            }
+
+            codiciFiscalir.next();
+        }
+
+        if(codiceValido)
+            return ValiditaCodici.VALIDO;
+        else
+            return ValiditaCodici.SPAIATO;
+    }
+
+
+    public boolean isACodice() {
+        if(codiceFiscale.length() != 16)
+            return false;
+        //COGNOME SOLO CARATTERI
+        if(!codiceFiscale.substring(0,3).matches("[A-Z]+"))
+            return false;
+        //NOME SOLO CARATTERI
+        if(!codiceFiscale.substring(3,6).matches("[A-Z]+"))
+            return false;
+        //ANNO SOLO CIFRE
+        if(!codiceFiscale.substring(6,8).matches("[0-9]+"))
+            return false;
+        //MESE SOLO LETTERE DEI MESI
+        if(!codiceFiscale.substring(8,9).matches("[ABCDEHLMPRST]+"))
+            return false;
+        //GIORNI SOLO CIFRE ACCETABBILI
+        if(!codiceFiscale.substring(9,11).matches("[0-9]+"))
+            return false;
+        else {
+            int gg = Integer.parseInt(codiceFiscale.substring(9, 11));
+            if (gg < 1 || (gg > 31 && gg < 41) || gg > 71)
+                return false;
+        }
+        //GIORNI DI FEBBRAIO MAX 28
+        if(!codiceFiscale.substring(8,9).equals("B") && (Integer.parseInt(codiceFiscale.substring(9,11)) > 28 && Integer.parseInt(codiceFiscale.substring(9,11)) < 41) || Integer.parseInt(codiceFiscale.substring(9,11)) > 68)
+            return false;
+        //MESI DA 30 GIORNI CON MAX 30 GIORNO DI NASCITA
+        if(!codiceFiscale.substring(8,9).matches("[DHPS]+") && (Integer.parseInt(codiceFiscale.substring(9,11)) > 30 && Integer.parseInt(codiceFiscale.substring(9,11)) < 41) || Integer.parseInt(codiceFiscale.substring(9,11)) > 70)
+            return false;
+        //CODICE PAESE 1 CARATTERE + 3 CIFRE
+        if(!codiceFiscale.substring(11,12).matches("[A-Z]+") && !codiceFiscale.substring(12,15).matches("[0-9]+"))
+            return false;
+        //CALCOLO CORRETTEZZA CARATTERE DI CONTROLLO
+        if(!codiceFiscale.substring(15).equals(carattereControllo(codiceFiscale.substring(0,15).toString())))
+            return false;
+
+        return true;
+    }
+
 
 }
