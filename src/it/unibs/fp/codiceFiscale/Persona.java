@@ -6,12 +6,12 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.FileInputStream;
 
+/**
+ * Classe persona per salvare i dati di una persona e generare il codice fiscale
+ */
+
 public class Persona {
     private static final int MAX_LETTERE = 3;
-
-    /*
-     * Classe persona per salvare i dati di una persona e generare il codice fiscale
-     */
 
     private String nome;
     private String cognome;
@@ -24,7 +24,7 @@ public class Persona {
     private StringBuffer codiceFiscale = new StringBuffer();
 
     /**
-     * Costrutture della classe persona
+     * Costruttore della classe persona
      *
      * @param nome nome della persona
      * @param cognome cognome della persona

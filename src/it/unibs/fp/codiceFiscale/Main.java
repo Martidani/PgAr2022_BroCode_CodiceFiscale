@@ -11,6 +11,10 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.XMLStreamException;
 
+/**
+ * Classe main per scrivere il file "codiciPersone.xml"
+ */
+
 public class Main {
 
     /**
@@ -24,11 +28,20 @@ public class Main {
 
     public static void main(String[] args) throws XMLStreamException {
 
+        /**
+         * Istanza oggetto inputPersone
+         * @see InputPersone#InputPersone()
+         * @see InputPersone#setArrayPersone()
+         * @see InputPersone#divisioneCodiciErrati()
+         */
         InputPersone inputPersone = new InputPersone();
         inputPersone.setArrayPersone();
         inputPersone.divisioneCodiciErrati();
 
-        //SCRITTURA DI FILE OUTPUT
+        /**
+         * Inizializzazione del file di scrittura
+         * Saranno contenute le informazioni di ogni persona e i codici fiscali
+         */
         XMLOutputFactory codiciPersoneof = null;
         XMLStreamWriter codiciPersonew = null;
         try {
