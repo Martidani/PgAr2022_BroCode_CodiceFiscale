@@ -12,6 +12,16 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.XMLStreamException;
 
 public class Main {
+
+    /**
+     * Scrittura dei dati sul file "codiciPersone.xml"
+     * Tag persone, con i dati di ogni  persona e il codice fiscale se presente, oppure ASSENTE
+     * Tag codici con i codici spaiati e i codici invalidi
+     *
+     * @param args
+     * @throws XMLStreamException
+     */
+
     public static void main(String[] args) throws XMLStreamException {
 
         InputPersone inputPersone = new InputPersone();
@@ -100,6 +110,13 @@ public class Main {
             System.out.println("Errore nella scrittura");
         }
     }
+
+    /**
+     * Metodo per inserimento del codice fiscale nel file con controllo
+     *
+     * @param p persona di cui si vuole controllare la validita' del codice
+     * @return codiceFiscale della persona se valido, ASSENTE altrimenti
+     */
 
     private static String codiceFiscaleControllo(Persona p) {
         if(p.getValidita() == ValiditaCodici.VALIDO)

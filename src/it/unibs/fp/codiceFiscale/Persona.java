@@ -9,6 +9,10 @@ import java.io.FileInputStream;
 public class Persona {
     private static final int MAX_LETTERE = 3;
 
+    /*
+     * Classe persona per salvare i dati di una persona e generare il codice fiscale
+     */
+
     private String nome;
     private String cognome;
     private String sesso;
@@ -19,6 +23,18 @@ public class Persona {
     private ValiditaCodici validita;
     private StringBuffer codiceFiscale = new StringBuffer();
 
+    /**
+     * Costrutture della classe persona
+     *
+     * @param nome nome della persona
+     * @param cognome cognome della persona
+     * @param sesso sesso della persona
+     * @param comuneNascita comune di nascita della persona
+     * @param aaDataNascita anno di nascita della persona
+     * @param mmDataNascita mese di nascita della persona
+     * @param ggDataNascita giorno di nascita della persona
+     */
+
     public Persona(String nome, String cognome, String sesso, String comuneNascita, String aaDataNascita, String mmDataNascita, String ggDataNascita) {
         this.nome = nome;
         this.cognome = cognome;
@@ -27,10 +43,6 @@ public class Persona {
         this.aaDataNascita = aaDataNascita;
         this.mmDataNascita = mmDataNascita;
         this.ggDataNascita = ggDataNascita;
-    }
-
-    public Persona() {
-
     }
 
     //// GETTER \\\\
@@ -87,6 +99,17 @@ public class Persona {
         this.comuneNascita = comuneNascita;
     }
 
+    /**
+     * Metodo per generare il codice fiscale della persona
+     * Vengono chiamati vari metodi per generare le vaire parti del codice fiscale
+     * @see Persona#lettereNomeCognome(String)
+     * @see Persona#letteraMese(String)
+     * @see Persona#giornoNascita(String, String)
+     * @see Persona#codiceComune()
+     * @see Persona#carattereControllo(String)
+     * @see Persona#setValiditaCodice()
+     */
+
     public void setCodiceFiscale() {
         codiceFiscale.append(lettereNomeCognome(cognome));
         codiceFiscale.append(lettereNomeCognome(nome));
@@ -109,30 +132,59 @@ public class Persona {
         }
     }
 
+    /**
+     * Metodo per restituire le 3 lettere del nome e cognome
+     * Se il nome o cognome ha meno di 3 lettere vengono aggiunte n X in base alle lettere mancanti
+     * @see Persona#ordinaConsonantiEVocali(String)
+     *
+     * @param s nome o cognome della persona
+     * @return ritorna le 3 lettere del nome o cognome passato
+     */
+
     public StringBuffer lettereNomeCognome(String s) {
         StringBuffer lettereOutput = new StringBuffer();
         if(s.length() < MAX_LETTERE){
-            lettereOutput.append(s);
+            lettereOutput.append(ordinaConsonantiEVocali(s));
             for(int i = s.length(); i < MAX_LETTERE; i++)
                 lettereOutput.append("X");
         }
-        else {
-            int numConsonanti = 0;
-            for(int i = 0; i < s.length() && lettereOutput.length() < MAX_LETTERE; i++) {
-                if (!isVowel(s.charAt(i))) {
+        else
+            lettereOutput.append(ordinaConsonantiEVocali(s));
+
+        return lettereOutput;
+    }
+
+    /**
+     * Metodo per generare le 3 lettere del nome e cognome
+     *
+     * @param s nome o cognome della persona
+     * @return ritorna le lettere del nome o cognome passato, massimo 3
+     */
+
+    public StringBuffer ordinaConsonantiEVocali(String s) {
+        StringBuffer lettereOutput = new StringBuffer();
+        int numConsonanti = 0;
+        for (int i = 0; i < s.length() && lettereOutput.length() < MAX_LETTERE; i++) {
+            if (!isVowel(s.charAt(i))) {
+                lettereOutput.append(s.charAt(i));
+                numConsonanti++;
+            }
+        }
+        if (numConsonanti < MAX_LETTERE) {
+            for (int i = 0; i < s.length() && lettereOutput.length() < MAX_LETTERE; i++)
+                if (isVowel(s.charAt(i)))
                     lettereOutput.append(s.charAt(i));
-                    numConsonanti++;
-                }
-            }
-            if(numConsonanti < MAX_LETTERE) {
-                for(int i = 0; i < s.length() && lettereOutput.length() < MAX_LETTERE; i++)
-                    if (isVowel(s.charAt(i)))
-                        lettereOutput.append(s.charAt(i));
-            }
         }
 
         return lettereOutput;
     }
+
+    /**
+     * Metdono per controllare se una lettera sia una vocale o no
+     *
+     * @param c lettere da considerare
+     * @return vero se vocale
+     */
 
     public boolean isVowel(char c) {
         if (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U') {
@@ -140,6 +192,13 @@ public class Persona {
         }
         return false;
     }
+
+    /**
+     * Metodo per generare la lettera corrispondente al mese di nascita
+     *
+     * @param mm numero del mese di nascita
+     * @return lettera corrispondente al mese di nascita
+     */
 
     public String letteraMese(String mm) {
         return switch (mm) {
@@ -159,12 +218,30 @@ public class Persona {
         };
     }
 
+    /**
+     * Metodo per restituire il giorno di nascita
+     * Se il sesso e' maschio ritorna lo stesso giorno
+     * Se il sesso e' femmina ritorna il giorno + 40
+     *
+     * @param sesso sesso della persona, serve per calcolare il giorno da restituire
+     * @param ggDataNascita giorno di nascita della persona
+     * @return giorno di nascita
+     */
+
     public int giornoNascita(String sesso, String ggDataNascita) {
         if(sesso.equals("M"))
             return Integer.parseInt(ggDataNascita);
         else
             return Integer.parseInt(ggDataNascita) + 40;
     }
+
+    /**
+     * Metodo per restituire il carattere di controllo
+     * @see it.unibs.fp.codiceFiscale.Persona#calcolaCarattereControllo(String)
+     *
+     * @param codiceCalcolo primi 15 caratteri del codice fiscale
+     * @return ritorna il carattere di controllo finale
+     */
 
     public String carattereControllo(String codiceCalcolo) {
         return switch (calcolaCarattereControllo(codiceCalcolo)) {
@@ -198,6 +275,17 @@ public class Persona {
         };
     }
 
+    /**
+     * Metodo per sommare il valore dei caretteri
+     * I caratteri in posizione dispari hanno un valore diverso rispetto ai caratteri in posizione pari
+     * Restituisce il numero corrispondente al carattere di controllo
+     * @see it.unibs.fp.codiceFiscale.Persona#caratteriDispari(char)
+     * @see it.unibs.fp.codiceFiscale.Persona#caratteriPari(char)
+     *
+     * @param codiceCalcolo primi 15 caratteri del codice fiscale
+     * @return la il resto del quoziente tra la somma dei valori e 26
+     */
+
     public int calcolaCarattereControllo(String codiceCalcolo) {
         int sommaCaratteri = 0;
         for(int i = 0; i < codiceCalcolo.length(); i++) {
@@ -209,6 +297,13 @@ public class Persona {
 
         return sommaCaratteri % 26;
     }
+
+    /**
+     * Metodo per trovare il valore corrispondente al carattere in posizione dispari
+     *
+     * @param c carattere corrispondente al valore
+     * @return ritorna il valore del carattere
+     */
 
     public int caratteriDispari(char c) {
         return switch (c) {
@@ -252,6 +347,13 @@ public class Persona {
         };
     }
 
+    /**
+     * Metodo per trovare il valore corrispondente al carattere in posizione pari
+     *
+     * @param c carattere corrispondente al valore
+     * @return ritorna il valore del carattere
+     */
+
     public int caratteriPari(char c) {
         return switch (c) {
             case '0' -> 0;
@@ -294,23 +396,67 @@ public class Persona {
         };
     }
 
+    /**
+     * Metodo per richiamare interfaccia InputComune
+     * @see it.unibs.fp.codiceFiscale.InputComuni#codiceComune(String)
+     *
+     * @return ritorna il codice relativo al comune di nascita
+     * @throws XMLStreamException
+     */
+
     public String codiceComune() throws XMLStreamException {
         return InputComuni.codiceComune(comuneNascita);
     }
 
-    public ValiditaCodici setValiditaCodice() throws XMLStreamException {
+    /**
+     * Metodo per impostare la validita' del codice fiscale generato
+     * Se il codice e' sintatticamente o logicamente scorretto si considera invalido
+     * @see Persona#isCodiceValido()
+     * se il codice risulta valido si considera valido, altrimenti spaiato
+     *
+     * @return ritorna la validita' del codice
+     * @throws XMLStreamException
+     */
 
+    public ValiditaCodici setValiditaCodice() throws XMLStreamException {
         if(!isACodice()) {
             return ValiditaCodici.INVALIDO;
         }
-
-        boolean codiceValido = InputCodici.existCodice(codiceFiscale);
+        boolean codiceValido = isCodiceValido();
 
         if(codiceValido)
             return ValiditaCodici.VALIDO;
         else
             return ValiditaCodici.SPAIATO;
     }
+
+    /**
+     * Metodo per richiamare interfaccia InputCodici
+     * Serve per controllare il codice generato con tutti quelli presenti nel file "codiciFiscali.zml"
+     *
+     * @see it.unibs.fp.codiceFiscale.InputCodici#existCodice(StringBuffer)
+     * @return ritorna vero se il codice e' valido, falso altrimenti
+     * @throws XMLStreamException
+     */
+
+    public boolean isCodiceValido() throws XMLStreamException {
+        return InputCodici.existCodice(codiceFiscale);
+    }
+
+    /**
+     * Metodo per controllare se il codice generato e' un codice fiscale
+     * Se non ha 16 caratteri, non e' un codice fiscale
+     * Se i primi 6 caratteri non sono lettere, non e' un codice fiscale
+     * Se i caratteri numero 7 e 8 non sono numerici, non e' un codice fiscale
+     * Se il carattere del mese (9) non corrisponde a nessun mese, non e' un codice fiscale
+     * Se il giorno di nascita (cifre 10-11) non sono numeriche e non e' compreso tra 1 e 31 o 41-71, non e' un codice fiscale
+     * Se il mese di nascita e' febbraio ("B") e il giorno di nascita e' maggiore di 28, non e' un codice fiscale
+     * Se per i mesi di nascita di 30 giorni e il giorno di nascita e' maggiore di 30, non e' un codice fiscale
+     * Se il carattere numero 12 non e' un carattere e le cifre numero 13-14-15 non sono numeriche, non e' un codice fiscale
+     * Se il carattere di controllo generato e' scorretto, non e' un codice fiscale
+     *
+     * @return vero se e' un codice fiscale, falso se si verifica una delle situazioni controllate
+     */
 
     public boolean isACodice() {
         if(codiceFiscale.length() != 16)
