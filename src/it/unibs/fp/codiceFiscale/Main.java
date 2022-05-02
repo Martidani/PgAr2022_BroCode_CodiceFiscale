@@ -74,7 +74,7 @@ public class Main {
                     codiciPersonew.writeCharacters(inputPersone.getPersona(i).getNome());
                     codiciPersonew.writeEndElement();
                     //cognome
-                    codiciPersonew.writeStartElement("conome");
+                    codiciPersonew.writeStartElement("cognome");
                     codiciPersonew.writeCharacters(inputPersone.getPersona(i).getCognome());
                     codiciPersonew.writeEndElement();
                     //sesso
