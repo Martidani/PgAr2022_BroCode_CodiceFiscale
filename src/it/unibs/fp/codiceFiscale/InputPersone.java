@@ -71,9 +71,9 @@ public class InputPersone {
 
     /**
      * Metodo per inserire nell'ArrayList di persone ogni persona contenuta nel file "inputPersone.xml"
-     * Nel ciclo vengono salvati in un array di String i dati di una persona, fino a quando non si raggiunge il TAG di chiusura "persona"
-     * Quando si raggiunge tale TAG viene costruito un nuovo oggetto Persona e aggiunto nell'ArrayList
-     * Nel costruttore di ogni nuova Persona vengono inseriti i dati dell'Array datiPersona
+     * <p>Nel ciclo vengono salvati in un array di String i dati di una persona, fino a quando non si raggiunge il TAG di chiusura "persona"
+     * <p>Quando si raggiunge tale TAG viene costruito un nuovo oggetto Persona e aggiunto nell'ArrayList
+     * <p>Nel costruttore di ogni nuova Persona vengono inseriti i dati dell'Array datiPersona
      * @see Persona#Persona(String, String, String, String, String, String, String)
      *
      * @throws XMLStreamException

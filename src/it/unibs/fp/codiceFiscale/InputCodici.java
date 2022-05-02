@@ -17,7 +17,7 @@ public interface InputCodici {
      * Nel ciclo se il codice fiscale coincide con uno dei codici presenti si termina l'iterazione
      *
      * @param codiceFiscale codice fiscale della persona da cercare
-     * @return Ritorna vero se il codice esiste, altrimenti non esiste
+     * @return Ritorna vero se il codice esiste, altrimenti falso
      * @throws XMLStreamException
      */
 
