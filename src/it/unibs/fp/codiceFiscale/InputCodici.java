@@ -9,18 +9,17 @@ import java.io.FileInputStream;
 /**
  * Interfaccia per confrontare il codice generato con i codici nella lista del file "codiciFiscali.xml"
  */
-
 public interface InputCodici {
 
     /**
      * Metodo per controllare se il codice coincide con uno della lista
-     * Nel ciclo se il codice fiscale coincide con uno dei codici presenti si termina l'iterazione
+     * Viene inilzializzato il file di lettura
+     * <p>Nel ciclo se il codice fiscale coincide con uno dei codici presenti si termina l'iterazione
      *
      * @param codiceFiscale codice fiscale della persona da cercare
      * @return Ritorna vero se il codice esiste, altrimenti falso
      * @throws XMLStreamException
      */
-
     static boolean existCodice(StringBuffer codiceFiscale) throws XMLStreamException {
         //LETTURA FILE codiciFiscali.xml
         XMLInputFactory codiciFiscaliif = null;

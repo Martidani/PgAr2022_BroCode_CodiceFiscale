@@ -14,57 +14,79 @@ import javax.xml.stream.XMLStreamException;
 
 /**
  * Classe per input dei dati del file "inputPersone.xml" in un ArrayList di Persona
- * @see Persona#Persona
  */
-
 public class InputPersone {
 
     /**
-     * ArrayList per ogni oggetto Persona generato
+     * ArrayList di Persona, contiene tutte le persone presenti nel file "inputPersone.xml"
+     * @see Persona#Persona(String, String, String, String, String, String, String)
      */
-
     private ArrayList<Persona> persone = new ArrayList<>();
 
     /**
      * ArrayList per contenere i codici invalidi
      */
-
     private ArrayList<String> codiciInvalidi = new ArrayList<>();
 
     /**
      * ArrayList per contenere i codici spaiati
      */
-
     private ArrayList<String> codiciSpaiati = new ArrayList<>();
 
     /**
      * Costruttore vuoto della classe
      */
-
     public InputPersone() {
     }
 
     //// GETTER \\\\
+    /**
+     * Getter di persone
+     * @return Ritorna ArrayList di persone
+     */
     public ArrayList<Persona> getPersone() {
         return persone;
     }
 
+    /**
+     * Getter di codiciInvalidi
+     * @return Ritorna ArrayList di codiciInvalidi
+     */
     public ArrayList<String> getCodiciInvalidi() {
         return codiciInvalidi;
     }
 
+    /**
+     * Getter di codiciSpaiati
+     * @return Ritorna ArrayList di codiciSpaiati
+     */
     public ArrayList<String> getCodiciSpaiati() {
         return codiciSpaiati;
     }
 
+    /**
+     * Metodo per ritornare una specifica persona nell'ArrayList
+     * @param index indice di posizione nell'ArrayList
+     * @return Ritorna la persona in posizione index nell'ArrayList
+     */
     public Persona getPersona(int index) {
         return persone.get(index);
     }
 
+    /**
+     * Metodo per ritornare uno specifico codice invalido nell'ArrayList
+     * @param index indice di posizione nell'ArrayList
+     * @return Ritorna il codice invalido in posizione index nell'ArrayList
+     */
     public String getCodiceInvalido(int index) {
         return codiciInvalidi.get(index);
     }
 
+    /**
+     * Metodo per ritornare uno specifico codice spaiato nell'ArrayList
+     * @param index indice di posizione nell'ArrayList
+     * @return Ritorna il codice spaiato in posizione index nell'ArrayList
+     */
     public String getCodiceSpaiato(int index) {
         return codiciSpaiati.get(index);
     }
@@ -78,7 +100,6 @@ public class InputPersone {
      *
      * @throws XMLStreamException
      */
-
     public void setArrayPersone() throws XMLStreamException {
         //LETTURA FILE inputPersone.xml
         XMLInputFactory personeif = null;
@@ -129,14 +150,13 @@ public class InputPersone {
 
     /**
      * Metodo per aggiungere negli ArrayList "codiciInvalidi" e "codiciSpaiati"
-     * I codici vengono suddivisi in base al tipo di validita' che possiedono
+     * <p>I codici vengono suddivisi in base al tipo di validita' che possiedono
      *
      * @see InputPersone#codiciInvalidi
      * @see InputPersone#codiciSpaiati
      * @see Persona#setValiditaCodice()
      * @see ValiditaCodici
      */
-
     public void divisioneCodiciErrati() {
         for(int i = 0; i < persone.size(); i++) {
             switch(persone.get(i).getValidita()) {

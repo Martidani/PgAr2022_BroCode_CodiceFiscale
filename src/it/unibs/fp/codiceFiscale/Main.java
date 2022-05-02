@@ -12,42 +12,39 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * Classe main per scrivere il file "codiciPersone.xml"
+ * Classe Main per scrivere il file "codiciPersone.xml"
  */
-
 public class Main {
 
     /**
      * Scrittura dei dati sul file "codiciPersone.xml"
      * Tag persone, con i dati di ogni  persona e il codice fiscale se presente, oppure ASSENTE
      * Tag codici con i codici spaiati e i codici invalidi
+     * Istanza oggetto inputPersone
+     * @see InputPersone#InputPersone()
+     * @see InputPersone#setArrayPersone()
+     * @see InputPersone#divisioneCodiciErrati()
      *
      * @param args
      * @throws XMLStreamException
      */
-
     public static void main(String[] args) throws XMLStreamException {
-
-        /**
-         * Istanza oggetto inputPersone
-         * @see InputPersone#InputPersone()
-         * @see InputPersone#setArrayPersone()
-         * @see InputPersone#divisioneCodiciErrati()
-         */
         InputPersone inputPersone = new InputPersone();
         inputPersone.setArrayPersone();
         inputPersone.divisioneCodiciErrati();
+        scriviDatiSuFile(inputPersone);
+    }
 
-        /**
-         * Inizializzazione del file di scrittura
-         * Saranno contenute le informazioni di ogni persona e i codici fiscali
-         * Inserimento dei dati personali di ogni persona
-         * inserimento del codice fiscale con controllo se corretto o no
-         * @see Main#codiceFiscaleControllo(Persona)
-         * Inserimento dei codici invalidi
-         * Inserimento dei codici spaiati
-         */
-
+    /**
+     * Metodo per scrivere i dati nel file "codiciPersone.xml"
+     * <p>Inizializzazione del file di scrittur, in cui saranno contenute le informazioni di ogni persona e i codici fiscali
+     * <p>Inserimento dei dati personali di ogni persona,
+     * con inserimento del codice fiscale con controllo se corretto o no
+     * @see Main#codiceFiscaleControllo(Persona)
+     * Inserimento dei codici invalidi
+     * Inserimento dei codici spaiati
+     */
+    private static void scriviDatiSuFile(InputPersone inputPersone) {
         XMLOutputFactory codiciPersoneof = null;
         XMLStreamWriter codiciPersonew = null;
         try {
@@ -119,7 +116,6 @@ public class Main {
                     codiciPersonew.writeEndElement();
                 codiciPersonew.writeEndElement();
 
-
             codiciPersonew.writeEndElement();
             codiciPersonew.writeEndDocument();
             codiciPersonew.flush();
@@ -131,12 +127,13 @@ public class Main {
     }
 
     /**
-     * Metodo per inserimento del codice fiscale nel file con controllo
+     * Metodo per controllo sull'inserimento del codice fiscale nel file
+     * <p>Se il codice e' valido si ritorna il codice fiscale
+     * <p>Se il codice non e' valido si ritorna "ASSENTE"
      *
      * @param p persona di cui si vuole controllare la validita' del codice
-     * @return codiceFiscale della persona se valido, ASSENTE altrimenti
+     * @return Ritorna codiceFiscale della persona se valido, ASSENTE altrimenti
      */
-
     public static String codiceFiscaleControllo(Persona p) {
         if(p.getValidita() == ValiditaCodici.VALIDO)
             return p.getCodiceFiscale().toString();
