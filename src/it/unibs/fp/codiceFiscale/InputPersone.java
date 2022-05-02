@@ -73,7 +73,8 @@ public class InputPersone {
      * Metodo per inserire nell'ArrayList di persone ogni persona contenuta nel file "inputPersone.xml"
      * Nel ciclo vengono salvati in un array di String i dati di una persona, fino a quando non si raggiunge il TAG di chiusura "persona"
      * Quando si raggiunge tale TAG viene costruito un nuovo oggetto Persona e aggiunto nell'ArrayList
-     * 
+     * Nel costruttore di ogni nuova Persona vengono inseriti i dati dell'Array datiPersona
+     * @see Persona#Persona(String, String, String, String, String, String, String)
      *
      * @throws XMLStreamException
      */
@@ -125,6 +126,16 @@ public class InputPersone {
             personer.next();
         }
     }
+
+    /**
+     * Metodo per aggiungere negli ArrayList "codiciInvalidi" e "codiciSpaiati"
+     * I codici vengono suddivisi in base al tipo di validita' che possiedono
+     *
+     * @see InputPersone#codiciInvalidi
+     * @see InputPersone#codiciSpaiati
+     * @see Persona#setValiditaCodice()
+     * @see ValiditaCodici
+     */
 
     public void divisioneCodiciErrati() {
         for(int i = 0; i < persone.size(); i++) {

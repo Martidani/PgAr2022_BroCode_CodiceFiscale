@@ -14,7 +14,8 @@ public interface InputComuni {
 
     /**
      * Metodo per ritornare il codice del comune, dato il nome del comune, presente nel file "comuni.xml"
-     * Se il comune non e' presente si ritorna un codice non esistente "****", in modo da rendere il codice fiscale invalido
+     * Se il comune non e' presente si ritorna un codice non esistente "****",
+     * in modo da rendere il codice fiscale invalido
      *
      * @param comuneNascita comune di nascita di cui si necessita il codice
      * @return ritorna il codice del comune

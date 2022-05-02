@@ -41,7 +41,13 @@ public class Main {
         /**
          * Inizializzazione del file di scrittura
          * Saranno contenute le informazioni di ogni persona e i codici fiscali
+         * Inserimento dei dati personali di ogni persona
+         * inserimento del codice fiscale con controllo se corretto o no
+         * @see Main#codiceFiscaleControllo(Persona)
+         * Inserimento dei codici invalidi
+         * Inserimento dei codici spaiati
          */
+
         XMLOutputFactory codiciPersoneof = null;
         XMLStreamWriter codiciPersonew = null;
         try {
