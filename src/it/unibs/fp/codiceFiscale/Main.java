@@ -131,7 +131,7 @@ public class Main {
      * @return codiceFiscale della persona se valido, ASSENTE altrimenti
      */
 
-    private static String codiceFiscaleControllo(Persona p) {
+    public static String codiceFiscaleControllo(Persona p) {
         if(p.getValidita() == ValiditaCodici.VALIDO)
             return p.getCodiceFiscale().toString();
         else

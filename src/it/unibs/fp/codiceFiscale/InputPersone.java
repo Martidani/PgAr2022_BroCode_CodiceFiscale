@@ -12,16 +12,39 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.XMLStreamException;
 
+/**
+ * Classe per input dei dati del file "inputPersone.xml" in un ArrayList di Persona
+ * @see Persona#Persona
+ */
 
 public class InputPersone {
+
+    /**
+     * ArrayList per ogni oggetto Persona generato
+     */
+
     private ArrayList<Persona> persone = new ArrayList<>();
+
+    /**
+     * ArrayList per contenere i codici invalidi
+     */
+
     private ArrayList<String> codiciInvalidi = new ArrayList<>();
+
+    /**
+     * ArrayList per contenere i codici spaiati
+     */
+
     private ArrayList<String> codiciSpaiati = new ArrayList<>();
 
-    public InputPersone() {
+    /**
+     * Costruttore vuoto della classe
+     */
 
+    public InputPersone() {
     }
 
+    //// GETTER \\\\
     public ArrayList<Persona> getPersone() {
         return persone;
     }
@@ -45,6 +68,15 @@ public class InputPersone {
     public String getCodiceSpaiato(int index) {
         return codiciSpaiati.get(index);
     }
+
+    /**
+     * Metodo per inserire nell'ArrayList di persone ogni persona contenuta nel file "inputPersone.xml"
+     * Nel ciclo vengono salvati in un array di String i dati di una persona, fino a quando non si raggiunge il TAG di chiusura "persona"
+     * Quando si raggiunge tale TAG viene costruito un nuovo oggetto Persona e aggiunto nell'ArrayList
+     * 
+     *
+     * @throws XMLStreamException
+     */
 
     public void setArrayPersone() throws XMLStreamException {
         //LETTURA FILE inputPersone.xml

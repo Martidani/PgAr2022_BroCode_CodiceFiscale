@@ -120,7 +120,7 @@ public class Persona {
             codiceFiscale.append(codiceComune());
         } catch (XMLStreamException e) {
             e.printStackTrace();
-            codiceFiscale.append("A000");
+            codiceFiscale.append("****");
         }
         codiceFiscale.append(carattereControllo(codiceFiscale.toString()));
 
