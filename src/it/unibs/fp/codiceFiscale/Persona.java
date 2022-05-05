@@ -129,7 +129,7 @@ public class Persona {
      */
     public void setCodiceFiscale() {
         codiceFiscale.append(lettereNomeCognome(cognome));
-        codiceFiscale.append(lettereNomeCognome(nome));
+        codiceFiscale.append(lettereNome(nome));
         codiceFiscale.append(aaDataNascita.substring(2));
         codiceFiscale.append(letteraMese(mmDataNascita));
         codiceFiscale.append(String.format("%02d", giornoNascita(sesso, ggDataNascita)));
@@ -182,17 +182,53 @@ public class Persona {
     public StringBuffer ordinaConsonantiEVocali(String s) {
         StringBuffer lettereOutput = new StringBuffer();
         int numConsonanti = 0;
+
         for (int i = 0; i < s.length() && lettereOutput.length() < MAX_LETTERE; i++) {
             if (!isVowel(s.charAt(i))) {
                 lettereOutput.append(s.charAt(i));
                 numConsonanti++;
             }
         }
+
         if (numConsonanti < MAX_LETTERE) {
             for (int i = 0; i < s.length() && lettereOutput.length() < MAX_LETTERE; i++)
                 if (isVowel(s.charAt(i)))
                     lettereOutput.append(s.charAt(i));
         }
+
+        return lettereOutput;
+    }
+
+
+    /**
+     * Metodo per generare le 3 lettere del nome
+     * <p>Prima vengono selezionate contate le consonanti
+     * <p>Se il numero di consonanti e' minore o uguale a 3 si usa lo stesso metodo del cognome
+     * <p>Se il numero di consonanti e' maggiore di 3 si selezionano la prima, la terza e la quarta consonante del nome
+     * @see Persona#isVowel(char)
+     * @see Persona#lettereNomeCognome(String)
+     * @see Persona#isVowel(char) 
+     *
+     * @param s nome o cognome della persona
+     * @return Ritorna le lettere del nome o cognome passato, massimo 3
+     */
+    public StringBuffer lettereNome(String s) {
+        StringBuffer lettereOutput = new StringBuffer();
+        int numConsonanti = 0;
+
+        for(int i = 0; i < s.length(); i++) {
+            if(!isVowel(s.charAt(i)))
+                numConsonanti++;
+        }
+
+        if(numConsonanti < 4)
+            lettereOutput = lettereNomeCognome(s);
+        else
+            for (int i = 0; i < s.length() && lettereOutput.length() < MAX_LETTERE; i++) {
+                if (!isVowel(s.charAt(i)) && i != 1) {
+                        lettereOutput.append(s.charAt(i));
+                }
+            }
 
         return lettereOutput;
     }
