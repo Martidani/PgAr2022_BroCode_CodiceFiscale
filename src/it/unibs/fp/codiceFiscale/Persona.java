@@ -1,10 +1,6 @@
 package it.unibs.fp.codiceFiscale;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.io.FileInputStream;
+import javax.xml.stream.*;
 
 /**
  * Classe persona per salvare i dati di una persona e generare il codice fiscale
@@ -207,7 +203,7 @@ public class Persona {
      * <p>Se il numero di consonanti e' maggiore di 3 si selezionano la prima, la terza e la quarta consonante del nome
      * @see Persona#isVowel(char)
      * @see Persona#lettereNomeCognome(String)
-     * @see Persona#isVowel(char) 
+     * @see Persona#isVowel(char)
      *
      * @param s nome o cognome della persona
      * @return Ritorna le lettere del nome o cognome passato, massimo 3
@@ -452,7 +448,7 @@ public class Persona {
      * @see InputComuni#codiceComune(String)
      *
      * @return Ritorna il codice relativo al comune di nascita
-     * @throws XMLStreamException
+     * @throws XMLStreamException Se dovesse esserci un errore nella lettura del file
      */
     public String codiceComune() throws XMLStreamException {
         return InputComuni.codiceComune(comuneNascita);
@@ -461,11 +457,11 @@ public class Persona {
     /**
      * Metodo per impostare la validita' del codice fiscale generato
      * <p>Se il codice e' sintatticamente o logicamente scorretto si considera invalido
-     * @see Persona#isCodiceValido()
      * <p>Se il codice risulta valido si considera valido, altrimenti spaiato
      *
+     * @see Persona#isCodiceValido()
      * @return Ritorna la validita' del codice
-     * @throws XMLStreamException
+     * @throws XMLStreamException Se dovesse esserci un errore nella lettura del file
      */
     public ValiditaCodici setValiditaCodice() throws XMLStreamException {
         if(!isACodice()) {
@@ -485,7 +481,7 @@ public class Persona {
      *
      * @see InputCodici#existCodice(StringBuffer)
      * @return ritorna vero se il codice e' valido, falso altrimenti
-     * @throws XMLStreamException
+     * @throws XMLStreamException Se dovesse esserci un errore nella lettura del file
      */
     public boolean isCodiceValido() throws XMLStreamException {
         return InputCodici.existCodice(codiceFiscale);

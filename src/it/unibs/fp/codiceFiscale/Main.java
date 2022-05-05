@@ -1,15 +1,7 @@
 package it.unibs.fp.codiceFiscale;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.logging.XMLFormatter;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.*;
 
 /**
  * Classe Main per scrivere il file "codiciPersone.xml"
@@ -26,7 +18,7 @@ public class Main {
      * @see InputPersone#divisioneCodiciErrati()
      *
      * @param args
-     * @throws XMLStreamException
+     * @throws XMLStreamException Se dovesse esserci un errore nel file di scrittura
      */
     public static void main(String[] args) throws XMLStreamException {
         InputPersone inputPersone = new InputPersone();

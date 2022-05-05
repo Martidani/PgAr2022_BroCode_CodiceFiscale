@@ -1,10 +1,7 @@
 package it.unibs.fp.codiceFiscale;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.io.FileInputStream;
+import javax.xml.stream.*;
+import java.io.*;
 
 /**
  * Interfaccia per restituire il codice del comune presente nel file "comuni.xml"
@@ -18,7 +15,7 @@ public interface InputComuni {
      *
      * @param comuneNascita comune di nascita di cui si necessita il codice
      * @return ritorna il codice del comune
-     * @throws XMLStreamException
+     * @throws XMLStreamException Se dovesse esserci un errore nella lettura del file
      */
     static String codiceComune(String comuneNascita) throws XMLStreamException {
         //LETTURA FILE comuni.xml
@@ -32,15 +29,20 @@ public interface InputComuni {
             System.out.println(e.getMessage());
         }
 
-        boolean restituisciCodice = false;
+        //DIVENTA VERO QUANDO SI TROVA IL COMUNE
         boolean nextCodice = false;
+        //DIVENTA VERO QUANDO SI TROVA IL COMUNE E SI NECESSITA DEL SUOI CODICE
+        boolean restituisciCodice = false;
 
-        while (comunir.hasNext()) { // continua a leggere finché ha eventi a disposizione
-
-            switch (comunir.getEventType()) { // switch sul tipo di evento
+        while (comunir.hasNext()) {
+            switch (comunir.getEventType()) {
                 case XMLStreamConstants.START_DOCUMENT:
                     break;
                 case XMLStreamConstants.START_ELEMENT:
+                    /*
+                     * CONTROLLO SE IL COMUNE ERA CORRETTO
+                     * SE VERO ALLORA IL CODICE SEGUENTE SARA' QUELLO DA RESTITUIRE, QUINDI restituisciCodice DIVENTA TRUE
+                     */
                     if(nextCodice)
                         restituisciCodice = true;
                     break;
@@ -49,8 +51,16 @@ public interface InputComuni {
                 case XMLStreamConstants.COMMENT:
                     break;
                 case XMLStreamConstants.CHARACTERS:
+                    /*
+                     * CONTROLLO SUL NOME DEI COMUNI PRESENTI NEL FILE E IL COMUNE DI NASCITA DELLA PERSONA
+                     * SE IL NOME DEL COMUNE COINCIDE, ALLORA SI DEVE RESTITUIRE IL CODICE CHE LO SEGUE, QUINDI IL PROSIMO CODICE E' CORRETTO
+                     */
                     if(comunir.getText().equals(comuneNascita))
                         nextCodice = true;
+                    /*
+                     * CONTROLLO SE IL COMUNE PRECEDENTE EREA IL COMUNE CORRETTO DI CUI RESTITUIRE IL CODICE
+                     * VIENE RESTITUITO IL CODICE DEL COMUNE DI NASCITA DELLA PERSONA
+                     */
                     if(restituisciCodice)
                         return comunir.getText();
                     break;
@@ -58,6 +68,7 @@ public interface InputComuni {
             comunir.next();
         }
 
+        //SE NON ESISTE IL COMUNE SI RESTITUISCE UN CODICE CHE RENDE IL CODICE FISCALE ERRATO
         return "****";
     }
 }

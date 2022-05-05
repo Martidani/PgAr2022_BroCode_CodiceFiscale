@@ -2,15 +2,8 @@ package it.unibs.fp.codiceFiscale;
 
 import java.util.ArrayList;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.logging.XMLFormatter;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.*;
 
 /**
  * Classe per input dei dati del file "inputPersone.xml" in un ArrayList di Persona
@@ -98,7 +91,7 @@ public class InputPersone {
      * <p>Nel costruttore di ogni nuova Persona vengono inseriti i dati dell'Array datiPersona
      * @see Persona#Persona(String, String, String, String, String, String, String)
      *
-     * @throws XMLStreamException
+     * @throws XMLStreamException Se dovesse esserci un errore nella lettura del file
      */
     public void setArrayPersone() throws XMLStreamException {
         //LETTURA FILE inputPersone.xml
@@ -125,6 +118,7 @@ public class InputPersone {
                 case XMLStreamConstants.START_ELEMENT:
                     break;
                 case XMLStreamConstants.END_ELEMENT:
+                    //QUANDO SI CHIUDE UN TAG PERSONA, NELL'ITERAZIONE SUCESSIVA SI AGGIUNGE UN NUOVO OGGETTO ALL'ARRAYLIST DI PERSONE
                     if (personer.getLocalName().equals("persona")) {
                         nextPerson = true;
                     }
@@ -133,12 +127,16 @@ public class InputPersone {
                     break;
                 case XMLStreamConstants.CHARACTERS:
                     if (nextPerson) {
+                        //AGGIUNTA DEL NUOVO OGGETTO NELL'ARRAYLIST, LA DATA DI NASCITA VIENE SEPARATA
                         persone.add(new Persona(datiPersona[0], datiPersona[1], datiPersona[2], datiPersona[3], datiPersona[4].split("-")[0], datiPersona[4].split("-")[1], datiPersona[4].split("-")[2]));
+                        //CREAZIONE DEL CODICE FISCALE DELLA PERSONA APPENA AGGIUNTA
                         persone.get(countPersone).setCodiceFiscale();
                         countPersone++;
                         countDati = 0;
+                        //VARIABILE nextPerson TORNA FALSA
                         nextPerson = false;
                     } else if (personer.getText().trim().length() > 0) {
+                        //VENGONO SALVATI I DATI DI OGNI PERSONA IN UN ARRAY DI STRING
                         datiPersona[countDati] = personer.getText();
                         countDati++;
                     }

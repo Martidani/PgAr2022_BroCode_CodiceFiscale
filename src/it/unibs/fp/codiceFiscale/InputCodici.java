@@ -1,10 +1,7 @@
 package it.unibs.fp.codiceFiscale;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.io.FileInputStream;
+import javax.xml.stream.*;
+import java.io.*;
 
 /**
  * Interfaccia per confrontare il codice generato con i codici nella lista del file "codiciFiscali.xml"
@@ -18,7 +15,7 @@ public interface InputCodici {
      *
      * @param codiceFiscale codice fiscale della persona da cercare
      * @return Ritorna vero se il codice esiste, altrimenti falso
-     * @throws XMLStreamException
+     * @throws XMLStreamException Se dovesse esserci un errore nella lettura del file
      */
     static boolean existCodice(StringBuffer codiceFiscale) throws XMLStreamException {
         //LETTURA FILE codiciFiscali.xml
@@ -45,6 +42,7 @@ public interface InputCodici {
                 case XMLStreamConstants.COMMENT:
                     break;
                 case XMLStreamConstants.CHARACTERS:
+                    //CONFRONTO DEI CODICI
                     if(codiciFiscalir.getText().equals(codiceFiscale.toString()))
                         codiceValido = true;
                     break;
