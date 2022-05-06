@@ -29,23 +29,14 @@ public interface InputComuni {
             System.out.println(e.getMessage());
         }
 
-        //DIVENTA VERO QUANDO SI TROVA IL COMUNE
+        //DIVENTA VERO QUANDO SI TROVA IL COMUNE CON IL CODICE DA RESTUIRE
         boolean nextCodice = false;
-        //DIVENTA VERO QUANDO SI TROVA IL COMUNE E SI NECESSITA DEL SUOI CODICE
-        boolean restituisciCodice = false;
 
         while (comunir.hasNext()) {
             switch (comunir.getEventType()) {
                 case XMLStreamConstants.START_DOCUMENT:
                     break;
                 case XMLStreamConstants.START_ELEMENT:
-                    /*
-                     * STEP 2
-                     * CONTROLLO SE IL COMUNE ERA CORRETTO
-                     * SE VERO ALLORA IL CODICE SEGUENTE SARA' QUELLO DA RESTITUIRE, QUINDI restituisciCodice DIVENTA TRUE
-                     */
-                    if(nextCodice)
-                        restituisciCodice = true;
                     break;
                 case XMLStreamConstants.END_ELEMENT:
                     break;
@@ -53,19 +44,18 @@ public interface InputComuni {
                     break;
                 case XMLStreamConstants.CHARACTERS:
                     /*
-                     * STEP 1
+                     * CONTROLLO SE E' L'ELEMENTO DA RESTITUIRE
+                     * E' DA RESTITUIRE SE L'ELEMENTO PRECEDENTE ERA IL COMUNE DI NASCITA E NON E' VUOTO
+                     * VIENE RESTITUITO IL CODICE DEL COMUNE DI NASCITA DELLA PERSONA
+                     */
+                    if(nextCodice && comunir.getText().trim().length() > 0)
+                        return comunir.getText();
+                    /*
                      * CONTROLLO SUL NOME DEI COMUNI PRESENTI NEL FILE E IL COMUNE DI NASCITA DELLA PERSONA
                      * SE IL NOME DEL COMUNE COINCIDE, ALLORA SI DEVE RESTITUIRE IL CODICE CHE LO SEGUE, QUINDI IL PROSSIMO CODICE E' CORRETTO
                      */
                     if(comunir.getText().equals(comuneNascita))
                         nextCodice = true;
-                    /*
-                     * STEP 3
-                     * ONTROLLO SE IL COMUNE PRECEDENTE EREA IL COMUNE CORRETTO DI CUI RESTITUIRE IL CODICE
-                     * VIENE RESTITUITO IL CODICE DEL COMUNE DI NASCITA DELLA PERSONA
-                     */
-                    if(restituisciCodice)
-                        return comunir.getText();
                     break;
             }
             comunir.next();
