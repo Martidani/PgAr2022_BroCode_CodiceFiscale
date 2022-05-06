@@ -16,7 +16,7 @@ public class InputPersone {
      */
     private ArrayList<Persona> persone = new ArrayList<>();
     private ArrayList<String> codiciInvalidi = new ArrayList<>();
-    private ArrayList<String> codiciSpaiati = new ArrayList<>();
+     private ArrayList<String> codiciSpaiati = new ArrayList<>();
 
     /**
      * Costruttore vuoto della classe
@@ -155,7 +155,7 @@ public class InputPersone {
 
     /**
      * Metodo per aggiungere negli ArrayList "codiciInvalidi" e "codiciSpaiati" i codici
-     * <p>I codici vengono suddivisi in base al tipo di validità che possiedono
+     * <p>I codici vengono suddivisi in base al tipo di validita' che possiedono
      *
      * @see InputPersone#codiciInvalidi
      * @see InputPersone#codiciSpaiati

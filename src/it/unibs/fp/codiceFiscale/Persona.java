@@ -104,10 +104,10 @@ public class Persona {
     }
 
     /**
-     * Getter di validità
+     * Getter di validita'
      *
      * @see ValiditaCodici
-     * @return Ritorna la validità della persona
+     * @return Ritorna la validita' della persona
      */
     public ValiditaCodici getValidita() {
         return validita;
@@ -168,7 +168,7 @@ public class Persona {
     /**
      * Metodo per generare le 3 lettere del nome e cognome
      * <p>Prima vengono selezionate solo le consonanti
-     * <p>Se il numero di consonanti è minore di 3 si selezionano le vocali
+     * <p>Se il numero di consonanti e' minore di 3 si selezionano le vocali
      * @see Persona#isVowel(char)
      *
      * @param s nome o cognome della persona
@@ -198,8 +198,8 @@ public class Persona {
     /**
      * Metodo per generare le 3 lettere del nome
      * <p>Prima vengono selezionate contate le consonanti
-     * <p>Se il numero di consonanti è minore o uguale a 3 si usa lo stesso metodo del cognome
-     * <p>Se il numero di consonanti è maggiore di 3 si selezionano la prima, la terza e la quarta consonante del nome
+     * <p>Se il numero di consonanti e' minore o uguale a 3 si usa lo stesso metodo del cognome
+     * <p>Se il numero di consonanti e' maggiore di 3 si selezionano la prima, la terza e la quarta consonante del nome
      * @see Persona#isVowel(char)
      * @see Persona#lettereNomeCognome(String)
      * @see Persona#isVowel(char)
@@ -235,7 +235,7 @@ public class Persona {
      * Metodo per controllare se una lettera sia una vocale o no
      *
      * @param c lettere da considerare
-     * @return Ritorna vero se il carattere è vocale, falso altrimenti
+     * @return Ritorna vero se il carattere e' vocale, falso altrimenti
      */
     public boolean isVowel(char c) {
         return c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U';
@@ -267,8 +267,8 @@ public class Persona {
 
     /**
      * Metodo per restituire il giorno di nascita
-     * <p>Se il sesso è maschio ritorna lo stesso giorno
-     * <p>Se il sesso è femmina ritorna il giorno + 40
+     * <p>Se il sesso e' maschio ritorna lo stesso giorno
+     * <p>Se il sesso e' femmina ritorna il giorno + 40
      *
      * @param sesso sesso della persona, serve per calcolare il giorno da restituire
      * @param ggDataNascita giorno di nascita della persona
@@ -454,12 +454,12 @@ public class Persona {
     }
 
     /**
-     * Metodo per impostare la validità del codice fiscale generato
-     * <p>Se il codice è sintatticamente o logicamente scorretto si considera invalido
+     * Metodo per impostare la validita' del codice fiscale generato
+     * <p>Se il codice e' sintatticamente o logicamente scorretto si considera invalido
      * <p>Se il codice risulta valido si considera valido, altrimenti spaiato
      *
      * @see Persona#isCodiceValido()
-     * @return Ritorna la validità del codice
+     * @return Ritorna la validita' del codice
      * @throws XMLStreamException Se dovesse esserci un errore nella lettura del file
      */
     public ValiditaCodici setValiditaCodice() throws XMLStreamException {
@@ -479,7 +479,7 @@ public class Persona {
      * <p>Serve per controllare il codice generato con tutti quelli presenti nel file "codiciFiscali.zml"
      *
      * @see InputCodici#existCodice(StringBuffer)
-     * @return ritorna vero se il codice è valido, falso altrimenti
+     * @return ritorna vero se il codice e' valido, falso altrimenti
      * @throws XMLStreamException Se dovesse esserci un errore nella lettura del file
      */
     public boolean isCodiceValido() throws XMLStreamException {
@@ -487,18 +487,18 @@ public class Persona {
     }
 
     /**
-     * Metodo per controllare se il codice generato è un codice fiscale
-     * <p>Se non ha 16 caratteri, non è un codice fiscale
-     * <p>Se i primi 6 caratteri non sono lettere, non è un codice fiscale
-     * <p>Se i caratteri numero 7 e 8 non sono numerici, non è un codice fiscale
-     * <p>Se il carattere del mese (9) non corrisponde a nessun mese, non è un codice fiscale
-     * <p>Se il giorno di nascita (cifre 10-11) non sono numeriche e non è compreso tra 1 e 31 o 41-71, non è un codice fiscale
-     * <p>Se il mese di nascita e' febbraio ("B") e il giorno di nascita è maggiore di 28, non è un codice fiscale
-     * <p>Se per i mesi di nascita di 30 giorni e il giorno di nascita è maggiore di 30, non è un codice fiscale
-     * <p>Se il carattere numero 12 non è un carattere e le cifre numero 13-14-15 non sono numeriche, non è un codice fiscale
-     * <p>Se il carattere di controllo generato è scorretto, non è un codice fiscale
+     * Metodo per controllare se il codice generato e' un codice fiscale
+     * <p>Se non ha 16 caratteri, non e' un codice fiscale
+     * <p>Se i primi 6 caratteri non sono lettere, non e' un codice fiscale
+     * <p>Se i caratteri numero 7 e 8 non sono numerici, non e' un codice fiscale
+     * <p>Se il carattere del mese (9) non corrisponde a nessun mese, non e' un codice fiscale
+     * <p>Se il giorno di nascita (cifre 10-11) non sono numeriche e non e' compreso tra 1 e 31 o 41-71, non e' un codice fiscale
+     * <p>Se il mese di nascita e' febbraio ("B") e il giorno di nascita e' maggiore di 28, non e' un codice fiscale
+     * <p>Se per i mesi di nascita di 30 giorni e il giorno di nascita e' maggiore di 30, non e' un codice fiscale
+     * <p>Se il carattere numero 12 non e' un carattere e le cifre numero 13-14-15 non sono numeriche, non e' un codice fiscale
+     * <p>Se il carattere di controllo generato e' scorretto, non e' un codice fiscale
      *
-     * @return vero se è un codice fiscale corretto, falso se si verifica una delle situazioni controllate
+     * @return vero se e' un codice fiscale corretto, falso se si verifica una delle situazioni controllate
      */
     public boolean isACodice() {
         if(codiceFiscale.length() != 16)
@@ -524,11 +524,17 @@ public class Persona {
                 return false;
         }
         //GIORNI DI FEBBRAIO MAX 28
-        if(codiceFiscale.substring(8,9).equals("B") && (Integer.parseInt(codiceFiscale.substring(9,11)) > 28 && Integer.parseInt(codiceFiscale.substring(9,11)) < 41) || Integer.parseInt(codiceFiscale.substring(9,11)) > 68)
-            return false;
+        if(codiceFiscale.substring(8,9).equals("B")) {
+            int gg = Integer.parseInt(codiceFiscale.substring(9, 11));
+            if ((gg > 28 && gg < 41) || gg > 68)
+                return false;
+        }
         //MESI DA 30 GIORNI CON MAX 30 GIORNO DI NASCITA
-        if(codiceFiscale.substring(8,9).matches("[DHPS]+") && (Integer.parseInt(codiceFiscale.substring(9,11)) > 30 && Integer.parseInt(codiceFiscale.substring(9,11)) < 41) || Integer.parseInt(codiceFiscale.substring(9,11)) > 70)
-            return false;
+        if(codiceFiscale.substring(8,9).matches("[DHPS]+")) {
+            int gg = Integer.parseInt(codiceFiscale.substring(9, 11));
+            if ((gg > 30 && gg < 41) || gg > 70)
+                return false;
+        }
         //CODICE PAESE 1 CARATTERE + 3 CIFRE
         if(!codiceFiscale.substring(11,12).matches("[A-Z]+") && !codiceFiscale.substring(12,15).matches("[0-9]+"))
             return false;

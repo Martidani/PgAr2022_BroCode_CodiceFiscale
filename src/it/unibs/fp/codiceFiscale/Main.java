@@ -9,10 +9,10 @@ import javax.xml.stream.*;
 public class Main {
 
     /**
-     * Scrittura dei dati sul file "codiciPersone.xml"
-     * Tag persone, con i dati di ogni  persona e il codice fiscale se presente, oppure ASSENTE
-     * Tag codici con i codici spaiati e i codici invalidi
-     * Istanza oggetto inputPersone
+     * Preparazione e scrittura dei dati sul file "codiciPersone.xml"
+     * <p>Tag persone, con i dati di ogni persona e il codice fiscale se presente, oppure ASSENTE
+     * <p>Tag codici con i codici spaiati e i codici invalidi
+     * <p>Istanza oggetto inputPersone
      * @see InputPersone#InputPersone()
      * @see InputPersone#setArrayPersone()
      * @see InputPersone#divisioneCodiciErrati()
@@ -33,11 +33,12 @@ public class Main {
     /**
      * Metodo per scrivere i dati nel file "codiciPersone.xml"
      * <p>Inizializzazione del file di scrittura, in cui saranno contenute le informazioni di ogni persona e i codici fiscali
-     * <p>Inserimento dei dati personali di ogni persona,
-     * con inserimento del codice fiscale con controllo se corretto o no
+     * <p>Inserimento dei dati personali di ogni persona con inserimento del codice fiscale con controllo se corretto o no
+     * <p>Inserimento dei codici invalidi
+     * <p>Inserimento dei codici spaiati
+     *
      * @see Main#codiceFiscaleControllo(Persona)
-     * Inserimento dei codici invalidi
-     * Inserimento dei codici spaiati
+     * @param inputPersone Oggetto con la lista delle persone e i codici da scrivere
      */
     private static void scriviDatiSuFile(InputPersone inputPersone) {
         XMLOutputFactory codiciPersoneof = null;
@@ -134,10 +135,10 @@ public class Main {
 
     /**
      * Metodo per controllo sull'inserimento del codice fiscale nel file
-     * <p>Se il codice è valido si ritorna il codice fiscale
-     * <p>Se il codice non è valido si ritorna "ASSENTE"
+     * <p>Se il codice e' valido si ritorna il codice fiscale
+     * <p>Se il codice non e' valido si ritorna "ASSENTE"
      *
-     * @param p persona di cui si vuole controllare la validità del codice
+     * @param p persona di cui si vuole controllare la validita' del codice
      * @return Ritorna codiceFiscale della persona se valido, ASSENTE altrimenti
      */
     public static String codiceFiscaleControllo(Persona p) {

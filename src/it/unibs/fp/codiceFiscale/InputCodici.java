@@ -42,7 +42,9 @@ public interface InputCodici {
                 case XMLStreamConstants.COMMENT:
                     break;
                 case XMLStreamConstants.CHARACTERS:
-                    //CONFRONTO DEI CODICI
+                    /*
+                     * CONFRONTO DEI CODICI
+                     */
                     if(codiciFiscalir.getText().equals(codiceFiscale.toString()))
                         codiceValido = true;
                     break;

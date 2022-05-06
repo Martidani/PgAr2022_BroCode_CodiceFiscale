@@ -9,8 +9,8 @@ import java.io.*;
 public interface InputComuni {
 
     /**
-     * Metodo per ritornare il codice del comune, dato il nome del comune, presente nel file "comuni.xml"
-     * <p>Se il comune non è presente si ritorna un codice non esistente "****",
+     * Metodo per ritornare il codice del comune nel file "comuni.xml", dato il nome del comune
+     * <p>Se il comune non e' presente si ritorna un codice non esistente "****",
      * in modo da rendere il codice fiscale invalido
      *
      * @param comuneNascita comune di nascita di cui si necessita il codice
