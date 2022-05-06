@@ -215,15 +215,18 @@ public class Persona {
             if(!isVowel(s.charAt(i)))
                 numConsonanti++;
         }
-
         if(numConsonanti < 4)
             lettereOutput = lettereNomeCognome(s);
-        else
+        else {
+            int posConsonante = 1;
             for (int i = 0; i < s.length() && lettereOutput.length() < MAX_LETTERE; i++) {
-                if (!isVowel(s.charAt(i)) && i != 1) {
+                if (!isVowel(s.charAt(i))) {
+                    if(posConsonante != 2)
                         lettereOutput.append(s.charAt(i));
+                    posConsonante++;
                 }
             }
+        }
 
         return lettereOutput;
     }

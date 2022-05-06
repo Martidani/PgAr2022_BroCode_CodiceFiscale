@@ -15,15 +15,7 @@ public class InputPersone {
      * @see Persona#Persona(String, String, String, String, String, String, String)
      */
     private ArrayList<Persona> persone = new ArrayList<>();
-
-    /**
-     * ArrayList per contenere i codici invalidi
-     */
     private ArrayList<String> codiciInvalidi = new ArrayList<>();
-
-    /**
-     * ArrayList per contenere i codici spaiati
-     */
     private ArrayList<String> codiciSpaiati = new ArrayList<>();
 
     /**
@@ -112,7 +104,7 @@ public class InputPersone {
 
         /*
          * LETTURA DEL FILE INPUTPERSONEA
-         * GGIUNTA DELLE PERSONE NELL'ARRAYLIST
+         * AGGIUNTA DELLE PERSONE NELL'ARRAYLIST
          */
         while (personer.hasNext()) {
             switch (personer.getEventType()) {
