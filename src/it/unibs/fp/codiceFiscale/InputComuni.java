@@ -40,6 +40,7 @@ public interface InputComuni {
                     break;
                 case XMLStreamConstants.START_ELEMENT:
                     /*
+                     * STEP 2
                      * CONTROLLO SE IL COMUNE ERA CORRETTO
                      * SE VERO ALLORA IL CODICE SEGUENTE SARA' QUELLO DA RESTITUIRE, QUINDI restituisciCodice DIVENTA TRUE
                      */
@@ -52,13 +53,15 @@ public interface InputComuni {
                     break;
                 case XMLStreamConstants.CHARACTERS:
                     /*
+                     * STEP 1
                      * CONTROLLO SUL NOME DEI COMUNI PRESENTI NEL FILE E IL COMUNE DI NASCITA DELLA PERSONA
-                     * SE IL NOME DEL COMUNE COINCIDE, ALLORA SI DEVE RESTITUIRE IL CODICE CHE LO SEGUE, QUINDI IL PROSIMO CODICE E' CORRETTO
+                     * SE IL NOME DEL COMUNE COINCIDE, ALLORA SI DEVE RESTITUIRE IL CODICE CHE LO SEGUE, QUINDI IL PROSSIMO CODICE E' CORRETTO
                      */
                     if(comunir.getText().equals(comuneNascita))
                         nextCodice = true;
                     /*
-                     * CONTROLLO SE IL COMUNE PRECEDENTE EREA IL COMUNE CORRETTO DI CUI RESTITUIRE IL CODICE
+                     * STEP 3
+                     * ONTROLLO SE IL COMUNE PRECEDENTE EREA IL COMUNE CORRETTO DI CUI RESTITUIRE IL CODICE
                      * VIENE RESTITUITO IL CODICE DEL COMUNE DI NASCITA DELLA PERSONA
                      */
                     if(restituisciCodice)
