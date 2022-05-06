@@ -524,10 +524,10 @@ public class Persona {
                 return false;
         }
         //GIORNI DI FEBBRAIO MAX 28
-        if(!codiceFiscale.substring(8,9).equals("B") && (Integer.parseInt(codiceFiscale.substring(9,11)) > 28 && Integer.parseInt(codiceFiscale.substring(9,11)) < 41) || Integer.parseInt(codiceFiscale.substring(9,11)) > 68)
+        if(codiceFiscale.substring(8,9).equals("B") && (Integer.parseInt(codiceFiscale.substring(9,11)) > 28 && Integer.parseInt(codiceFiscale.substring(9,11)) < 41) || Integer.parseInt(codiceFiscale.substring(9,11)) > 68)
             return false;
         //MESI DA 30 GIORNI CON MAX 30 GIORNO DI NASCITA
-        if(!codiceFiscale.substring(8,9).matches("[DHPS]+") && (Integer.parseInt(codiceFiscale.substring(9,11)) > 30 && Integer.parseInt(codiceFiscale.substring(9,11)) < 41) || Integer.parseInt(codiceFiscale.substring(9,11)) > 70)
+        if(codiceFiscale.substring(8,9).matches("[DHPS]+") && (Integer.parseInt(codiceFiscale.substring(9,11)) > 30 && Integer.parseInt(codiceFiscale.substring(9,11)) < 41) || Integer.parseInt(codiceFiscale.substring(9,11)) > 70)
             return false;
         //CODICE PAESE 1 CARATTERE + 3 CIFRE
         if(!codiceFiscale.substring(11,12).matches("[A-Z]+") && !codiceFiscale.substring(12,15).matches("[0-9]+"))
