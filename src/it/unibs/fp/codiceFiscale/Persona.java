@@ -341,7 +341,6 @@ public class Persona {
             else
                 sommaCaratteri += caratteriPari(codiceCalcolo.charAt(i));
         }
-
         return sommaCaratteri % 26;
     }
 
