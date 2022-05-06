@@ -22,8 +22,11 @@ public class Main {
      */
     public static void main(String[] args) throws XMLStreamException {
         InputPersone inputPersone = new InputPersone();
+        //INIZIO DELLA LETTURA DI "inputPersone.xml" E CREAZIONE DELL'ARRAYLIST DI PERSONE
         inputPersone.setArrayPersone();
+        //DIVISIONE DEI CODICI ERRATI E SPAIATI
         inputPersone.divisioneCodiciErrati();
+        //SCRITTURA DEL FILE "codiciPersone.xml"
         scriviDatiSuFile(inputPersone);
     }
 

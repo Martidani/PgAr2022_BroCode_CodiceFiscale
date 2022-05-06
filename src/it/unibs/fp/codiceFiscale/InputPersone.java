@@ -148,6 +148,7 @@ public class InputPersone {
                         nextPerson = false;
                     } else if (personer.getText().trim().length() > 0) {
                         /*
+                         * SE nextPerson E' FALSO SI SALVANO I DATI
                          * SE IL TESTO NON E' COMPOSTO DA CARATTERI NON VIENE SALVATO
                          * VENGONO SALVATI I DATI DI OGNI PERSONA IN UN ARRAY DI STRING
                          */
@@ -184,7 +185,6 @@ public class InputPersone {
                     break;
             }
         }
-
     }
 
 
