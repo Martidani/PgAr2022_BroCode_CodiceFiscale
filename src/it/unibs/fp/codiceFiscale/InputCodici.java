@@ -10,7 +10,7 @@ public interface InputCodici {
 
     /**
      * Metodo per controllare se il codice coincide con uno della lista
-     * Viene inilzializzato il file di lettura
+     * Viene inizializzato il file di lettura
      * <p>Nel ciclo se il codice fiscale coincide con uno dei codici presenti si termina l'iterazione
      *
      * @param codiceFiscale codice fiscale della persona da cercare

@@ -29,7 +29,7 @@ public class Main {
 
     /**
      * Metodo per scrivere i dati nel file "codiciPersone.xml"
-     * <p>Inizializzazione del file di scrittur, in cui saranno contenute le informazioni di ogni persona e i codici fiscali
+     * <p>Inizializzazione del file di scrittura, in cui saranno contenute le informazioni di ogni persona e i codici fiscali
      * <p>Inserimento dei dati personali di ogni persona,
      * con inserimento del codice fiscale con controllo se corretto o no
      * @see Main#codiceFiscaleControllo(Persona)
@@ -49,81 +49,92 @@ public class Main {
         }
 
         //SCRITTURA DEL FILE codiciPersone.xml
-        try { // blocco try per raccogliere eccezioni
+        try {
+            //INIIZO TAG OUTPUT
             codiciPersonew.writeStartElement("output");
+                //INIZIO TAG PERSONE
                 codiciPersonew.writeStartElement("persone");
+                //NUMERO DI PERSONE
                 codiciPersonew.writeAttribute("numero", Integer.toString(inputPersone.getPersone().size()));
 
                 for (int i = 0; i < inputPersone.getPersone().size(); i++) {
-                    //inizio TAG persona
+                    //INIZIO TAG PERSONA
                     codiciPersonew.writeStartElement("persona");
                     codiciPersonew.writeAttribute("id", Integer.toString(i));
-                    //nome
-                    codiciPersonew.writeStartElement("nome");
-                    codiciPersonew.writeCharacters(inputPersone.getPersona(i).getNome());
-                    codiciPersonew.writeEndElement();
-                    //cognome
-                    codiciPersonew.writeStartElement("conome");
-                    codiciPersonew.writeCharacters(inputPersone.getPersona(i).getCognome());
-                    codiciPersonew.writeEndElement();
-                    //sesso
-                    codiciPersonew.writeStartElement("sesso");
-                    codiciPersonew.writeCharacters(inputPersone.getPersona(i).getSesso());
-                    codiciPersonew.writeEndElement();
-                    //comune di nascita
-                    codiciPersonew.writeStartElement("comune_nascita");
-                    codiciPersonew.writeCharacters(inputPersone.getPersona(i).getComuneNascita());
-                    codiciPersonew.writeEndElement();
-                    //data di nascita
-                    codiciPersonew.writeStartElement("data_nascita");
-                    codiciPersonew.writeCharacters(inputPersone.getPersona(i).getAaDataNascita() + "-" + inputPersone.getPersona(i).getMmDataNascita() + "-" + inputPersone.getPersona(i).getGgDataNascita());
-                    codiciPersonew.writeEndElement();
-                    //codice fiscale
-                    codiciPersonew.writeStartElement("codice_fiscale");
-                    codiciPersonew.writeCharacters(codiceFiscaleControllo(inputPersone.getPersona(i)));
-                    codiciPersonew.writeEndElement();
-
-                    //fine TAG persona
+                        //NOME
+                        codiciPersonew.writeStartElement("nome");
+                        codiciPersonew.writeCharacters(inputPersone.getPersona(i).getNome());
+                        codiciPersonew.writeEndElement();
+                        //COGNOME
+                        codiciPersonew.writeStartElement("cognome");
+                        codiciPersonew.writeCharacters(inputPersone.getPersona(i).getCognome());
+                        codiciPersonew.writeEndElement();
+                        //SESSO
+                        codiciPersonew.writeStartElement("sesso");
+                        codiciPersonew.writeCharacters(inputPersone.getPersona(i).getSesso());
+                        codiciPersonew.writeEndElement();
+                        //COMUNE DI NASCITA
+                        codiciPersonew.writeStartElement("comune_nascita");
+                        codiciPersonew.writeCharacters(inputPersone.getPersona(i).getComuneNascita());
+                        codiciPersonew.writeEndElement();
+                        //DATA DI NASCITA
+                        codiciPersonew.writeStartElement("data_nascita");
+                        codiciPersonew.writeCharacters(inputPersone.getPersona(i).getAaDataNascita() + "-" + inputPersone.getPersona(i).getMmDataNascita() + "-" + inputPersone.getPersona(i).getGgDataNascita());
+                        codiciPersonew.writeEndElement();
+                        //CODICE FISCALE
+                        codiciPersonew.writeStartElement("codice_fiscale");
+                        codiciPersonew.writeCharacters(codiceFiscaleControllo(inputPersone.getPersona(i)));
+                        codiciPersonew.writeEndElement();
+                    //FINE TAG PERSONA
                     codiciPersonew.writeEndElement();
                 }
+                //FINE TAG PERSONE
                 codiciPersonew.writeEndElement();
-
+                //INIZIO TAG CODICI
                 codiciPersonew.writeStartElement("codici");
+                    //INIZIO TAG INVALIDI
                     codiciPersonew.writeStartElement("invalidi");
+                    //NUMERO DI CODICI INVALIDI
                     codiciPersonew.writeAttribute("numero", Integer.toString(inputPersone.getCodiciInvalidi().size()));
                     for(int i =0; i < inputPersone.getCodiciInvalidi().size(); i++) {
+                        //CODICE
                         codiciPersonew.writeStartElement("codice");
                         codiciPersonew.writeCharacters(inputPersone.getCodiceInvalido(i));
                         codiciPersonew.writeEndElement();
                     }
+                    //FINE TAG INVALIDI
                     codiciPersonew.writeEndElement();
-
+                    //INIZIO TAG SPAIATI
                     codiciPersonew.writeStartElement("spaiati");
                     codiciPersonew.writeAttribute("numero", Integer.toString(inputPersone.getCodiciSpaiati().size()));
                     for(int i =0; i < inputPersone.getCodiciSpaiati().size(); i++) {
+                        //CODICE
                         codiciPersonew.writeStartElement("codice");
                         codiciPersonew.writeCharacters(inputPersone.getCodiceSpaiato(i));
                         codiciPersonew.writeEndElement();
                     }
+                    //FINE TAG SPAIATI
                     codiciPersonew.writeEndElement();
+                //FINE TAG CIDICI
                 codiciPersonew.writeEndElement();
-
+            //FINE TAG OUTPUT
             codiciPersonew.writeEndElement();
+            //FINE DOCUMENTO
             codiciPersonew.writeEndDocument();
             codiciPersonew.flush();
             codiciPersonew.close();
 
         } catch (Exception e) {
-            System.out.println("Errore nella scrittura");
+            System.out.println("Errore nella scrittura di \"codiciPersone.xml\"");
         }
     }
 
     /**
      * Metodo per controllo sull'inserimento del codice fiscale nel file
-     * <p>Se il codice e' valido si ritorna il codice fiscale
-     * <p>Se il codice non e' valido si ritorna "ASSENTE"
+     * <p>Se il codice è valido si ritorna il codice fiscale
+     * <p>Se il codice non è valido si ritorna "ASSENTE"
      *
-     * @param p persona di cui si vuole controllare la validita' del codice
+     * @param p persona di cui si vuole controllare la validità del codice
      * @return Ritorna codiceFiscale della persona se valido, ASSENTE altrimenti
      */
     public static String codiceFiscaleControllo(Persona p) {

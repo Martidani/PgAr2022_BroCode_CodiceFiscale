@@ -94,7 +94,7 @@ public class InputPersone {
      * @throws XMLStreamException Se dovesse esserci un errore nella lettura del file
      */
     public void setArrayPersone() throws XMLStreamException {
-        //LETTURA FILE inputPersone.xml
+        //INIZIALIZZAZIONE PER LETTURA DEL FILE inputPersone.xml
         XMLInputFactory personeif = null;
         XMLStreamReader personer = null;
         try {
@@ -110,7 +110,10 @@ public class InputPersone {
         int countPersone = 0;
         String[] datiPersona = new String[5];
 
-        //LETTURA DEL FILE INPUTPERSONE
+        /*
+         * LETTURA DEL FILE INPUTPERSONEA
+         * GGIUNTA DELLE PERSONE NELL'ARRAYLIST
+         */
         while (personer.hasNext()) {
             switch (personer.getEventType()) {
                 case XMLStreamConstants.START_DOCUMENT:
@@ -118,7 +121,11 @@ public class InputPersone {
                 case XMLStreamConstants.START_ELEMENT:
                     break;
                 case XMLStreamConstants.END_ELEMENT:
-                    //QUANDO SI CHIUDE UN TAG PERSONA, NELL'ITERAZIONE SUCESSIVA SI AGGIUNGE UN NUOVO OGGETTO ALL'ARRAYLIST DI PERSONE
+                    /*
+                     * QUANDO SI CHIUDE UN TAG PERSONA
+                     * NELL'ITERAZIONE SUCESSIVA SI AGGIUNGE UN NUOVO OGGETTO ALL'ARRAYLIST DI PERSONE
+                     * IL CARATTERE SUCCESSIVO AL NUOVO TAG PERSONA E' DI SOLI SPAZI
+                     */
                     if (personer.getLocalName().equals("persona")) {
                         nextPerson = true;
                     }
@@ -127,16 +134,23 @@ public class InputPersone {
                     break;
                 case XMLStreamConstants.CHARACTERS:
                     if (nextPerson) {
-                        //AGGIUNTA DEL NUOVO OGGETTO NELL'ARRAYLIST, LA DATA DI NASCITA VIENE SEPARATA
+                        /*
+                         * AGGIUNTA DELLA NUOVA Persona NELL'ARRAYLIST
+                         * I DATI SONO CONTENUTI NELL'ARRAY datiPersona
+                         * LA DATA DI NASCITA VIENE SEPARATA CON IL METODO split(), VIENE DIVISA AL CARATTERE "-"
+                         */
                         persone.add(new Persona(datiPersona[0], datiPersona[1], datiPersona[2], datiPersona[3], datiPersona[4].split("-")[0], datiPersona[4].split("-")[1], datiPersona[4].split("-")[2]));
                         //CREAZIONE DEL CODICE FISCALE DELLA PERSONA APPENA AGGIUNTA
                         persone.get(countPersone).setCodiceFiscale();
                         countPersone++;
                         countDati = 0;
-                        //VARIABILE nextPerson TORNA FALSA
+                        //VARIABILE nextPerson TORNA FALSA PER SALVARE I DATI DELLA PROSSIMA PERSONA
                         nextPerson = false;
                     } else if (personer.getText().trim().length() > 0) {
-                        //VENGONO SALVATI I DATI DI OGNI PERSONA IN UN ARRAY DI STRING
+                        /*
+                         * SE IL TESTO NON E' COMPOSTO DA CARATTERI NON VIENE SALVATO
+                         * VENGONO SALVATI I DATI DI OGNI PERSONA IN UN ARRAY DI STRING
+                         */
                         datiPersona[countDati] = personer.getText();
                         countDati++;
                     }
@@ -147,8 +161,8 @@ public class InputPersone {
     }
 
     /**
-     * Metodo per aggiungere negli ArrayList "codiciInvalidi" e "codiciSpaiati"
-     * <p>I codici vengono suddivisi in base al tipo di validita' che possiedono
+     * Metodo per aggiungere negli ArrayList "codiciInvalidi" e "codiciSpaiati" i codici
+     * <p>I codici vengono suddivisi in base al tipo di validità che possiedono
      *
      * @see InputPersone#codiciInvalidi
      * @see InputPersone#codiciSpaiati
@@ -156,15 +170,15 @@ public class InputPersone {
      * @see ValiditaCodici
      */
     public void divisioneCodiciErrati() {
-        for(int i = 0; i < persone.size(); i++) {
-            switch(persone.get(i).getValidita()) {
+        for (Persona persona : persone) {
+            switch (persona.getValidita()) {
                 case VALIDO:
                     break;
                 case INVALIDO:
-                    codiciInvalidi.add(persone.get(i).getCodiceFiscale().toString());
+                    codiciInvalidi.add(persona.getCodiceFiscale().toString());
                     break;
                 case SPAIATO:
-                    codiciSpaiati.add(persone.get(i).getCodiceFiscale().toString());
+                    codiciSpaiati.add(persona.getCodiceFiscale().toString());
                     break;
                 default:
                     break;
